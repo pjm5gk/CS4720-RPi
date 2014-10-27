@@ -1,6 +1,9 @@
 import web # link to download on the RPi milestone page
 import requests # this needs to be downloaded as well
 import json
+import socket
+import urllib2
+from subprocess import check_output
 from operator import itemgetter, attrgetter, methodcaller
 
 urls = (
@@ -10,6 +13,7 @@ urls = (
 
 class rpi:
     def POST(self):
+        ip = check_output(['hostname', '-I'])
         lightIDValue = None
         redValue = None
         blueValue = None
@@ -31,7 +35,7 @@ class rpi:
                 }
                 ],  "propagate": propagateValue
         }
-        result = requests.post('http://our-ip-here/rpi', data=json.dumps(data), headers=web.header) # I don't know our IP address so it needs to be added here
+        result = requests.post('http://' + ip + '/rpi', data=json.dumps(data), headers=web.header) # I don't know our IP address so it needs to be added here
         sorted(result, key=attrgetter(["lights"]["lightID"])) # sort by lightID, not quite sure if this line will work
         for i in xrange(len(result)): # loop through all lights
             if result[i].lights["lightID"] > 1:
