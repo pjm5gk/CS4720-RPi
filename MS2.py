@@ -25,6 +25,9 @@ class rpi:
     #         struct.pack('256s', ifname[:15])
     #     )[20:24])
 
+    def GET(self):
+        return "Hello World!"
+
     def POST(self):
         # ip = check_output(['hostname', '-I'])
         # ip = get_ip_address('wlan0')
