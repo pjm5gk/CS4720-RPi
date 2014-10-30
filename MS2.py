@@ -25,9 +25,8 @@ class rpi:
     #         struct.pack('256s', ifname[:15])
     #     )[20:24])
 
-    def __init__(self):
-        self.hello = "snakes on a pie!"
-        self.ip_addr = check_output(['hostname', '-I'])
+    def GET(self):
+        return "Hello World!"
 
     def POST(self):
         ip = check_output(['hostname', '-I'])
