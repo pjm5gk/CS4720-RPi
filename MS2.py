@@ -25,16 +25,20 @@ class rpi:
     #         struct.pack('256s', ifname[:15])
     #     )[20:24])
 
+    def __init__(self):
+        self.hello = "snakes on a pie!"
+        self.ip_addr = check_output(['hostname', '-I'])
+
     def POST(self):
-        # ip = check_output(['hostname', '-I'])
+        ip = check_output(['hostname', '-I'])
         # ip = get_ip_address('wlan0')
-        gw = os.popen("ip -4 route show default").read().split()
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect((gw[2], 0))
-        ipaddr = s.getsockname()[0]
-        gateway = gw[2]
-        host = socket.gethostname()
-        print ("IP:", ipaddr, " GW:", gateway, " Host:", host)
+        # gw = os.popen("ip -4 route show default").read().split()
+        # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # s.connect((gw[2], 0))
+        # ipaddr = s.getsockname()[0]
+        # gateway = gw[2]
+        # host = socket.gethostname()
+        # print ("IP:", ipaddr, " GW:", gateway, " Host:", host)
         
         lightIDValue = None
         redValue = None
