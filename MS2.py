@@ -7,6 +7,7 @@ import fcntl
 import struct
 from subprocess import check_output
 from operator import itemgetter, attrgetter, methodcaller
+import os
 
 urls = (
     '/rpi', 'rpi' # for navigation to http://our ip address/rpi
@@ -16,17 +17,25 @@ urls = (
 class rpi:
 
 
-    def get_ip_address(ifname):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        return socket.inet_ntoa(fcntl.ioctl(
-            s.fileno(),
-            0x8915,  # SIOCGIFADDR
-            struct.pack('256s', ifname[:15])
-        )[20:24])
+    # def get_ip_address(ifname):
+    #     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    #     return socket.inet_ntoa(fcntl.ioctl(
+    #         s.fileno(),
+    #         0x8915,  # SIOCGIFADDR
+    #         struct.pack('256s', ifname[:15])
+    #     )[20:24])
 
     def POST(self):
         # ip = check_output(['hostname', '-I'])
-        ip = get_ip_address('wlan0')
+        # ip = get_ip_address('wlan0')
+        gw = os.popen("ip -4 route show default").read().split()
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect((gw[2], 0))
+        ipaddr = s.getsockname()[0]
+        gateway = gw[2]
+        host = socket.gethostname()
+        print ("IP:", ipaddr, " GW:", gateway, " Host:", host)
+        
         lightIDValue = None
         redValue = None
         blueValue = None
