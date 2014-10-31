@@ -25,10 +25,19 @@ class rpi:
     #         struct.pack('256s', ifname[:15])
     #     )[20:24])
 
+    def __init__(self):
+        print "We got a hit"
+        requests.post("http://cs4720.cs.virginia.edu/pregistration/?pokemon=Chikorita&ip=" + check_output(['hostname','-I']))
+
+
     def GET(self):
         return "Hello World!"
 
     def POST(self):
+
+        result = web.data()
+        print result
+
         ip = check_output(['hostname', '-I'])
         # ip = get_ip_address('wlan0')
         # gw = os.popen("ip -4 route show default").read().split()
@@ -49,7 +58,7 @@ class rpi:
         leftmostBlue = None
         leftmostGreen = None
         web.header = {"Content-type": "application/json"}
-        data = {
+        payload = {
                 "lights": [
                 {
                     "lightID": lightIDValue,
@@ -60,7 +69,9 @@ class rpi:
                 }
                 ],  "propagate": propagateValue
         }
-        result = requests.post('http://' + ip + '/rpi', data=json.dumps(data), headers=web.header) # I don't know our IP address so it needs to be added here
+        # result = requests.post('http://' + ip + '/rpi', data=json.dumps(payload), headers=web.header) # I don't know our IP address so it needs to be added here
+        # print result
+
         sorted(result, key=attrgetter(["lights"]["lightID"])) # sort by lightID, not quite sure if this line will work
         for i in xrange(len(result)): # loop through all lights
             if result[i].lights["lightID"] > 1:
