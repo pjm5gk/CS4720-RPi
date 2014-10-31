@@ -7,6 +7,7 @@ import fcntl
 import struct
 from subprocess import check_output
 from operator import itemgetter, attrgetter, methodcaller
+from bootstrap import *
 import os
 
 urls = (
@@ -26,6 +27,9 @@ class rpi:
     #     )[20:24])
 
     def __init__(self):
+        self.led = LEDStrip(32)
+        led.fillRGB(0,255,0)
+        led.update()
         print "We got a hit"
         requests.post("http://cs4720.cs.virginia.edu/pregistration/?pokemon=Chikorita&ip=" + check_output(['hostname','-I']))
 
