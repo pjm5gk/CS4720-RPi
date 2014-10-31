@@ -35,8 +35,8 @@ class rpi:
 
     def POST(self):
 
-        result = web.data()
-        print result
+        result = urllib2.unquote(web.data())
+        
 
         ip = check_output(['hostname', '-I'])
         # ip = get_ip_address('wlan0')
@@ -57,21 +57,22 @@ class rpi:
         leftmostRed = None
         leftmostBlue = None
         leftmostGreen = None
-        web.header = {"Content-type": "application/json"}
-        payload = {
-                "lights": [
-                {
-                    "lightID": lightIDValue,
-                    "red": redValue,
-                    "blue": blueValue,
-                    "green": greenValue,
-                    "intensity": intensityValue
-                }
-                ],  "propagate": propagateValue
-        }
+        # web.header = {"Content-type": "application/json"}
+        # payload = {
+        #         "lights": [
+        #         {
+        #             "lightID": lightIDValue,
+        #             "red": redValue,
+        #             "blue": blueValue,
+        #             "green": greenValue,
+        #             "intensity": intensityValue
+        #         }
+        #         ],  "propagate": propagateValue
+        # }
         # result = requests.post('http://' + ip + '/rpi', data=json.dumps(payload), headers=web.header) # I don't know our IP address so it needs to be added here
         # print result
 
+        print result["lights"]["lightID"]
         sorted(result, key=attrgetter(["lights"]["lightID"])) # sort by lightID, not quite sure if this line will work
         for i in xrange(len(result)): # loop through all lights
             if result[i].lights["lightID"] > 1:
