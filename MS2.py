@@ -28,7 +28,8 @@ class rpi:
 
     def __init__(self):
         self.led = LEDStrip(32)
-        led.fillRGB(0,255,0)
+        led.all_off()
+        led.fillRGB(255,0,0)
         led.update()
         print "We got a hit"
         requests.post("http://cs4720.cs.virginia.edu/pregistration/?pokemon=Chikorita&ip=" + check_output(['hostname','-I']))
