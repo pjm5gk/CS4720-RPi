@@ -78,15 +78,19 @@ class rpi:
         # print result
 
         # print result["lights"]["lightID"]
-        # sorted(result, key=attrgetter(["lights"]["lightID"])) # sort by lightID, not quite sure if this line will work
+        sorted(result, key=attrgetter(["lights"]["lightID"])) # sort by lightID, not quite sure if this line will work
         index = 0
+        previousColored = 0
         for i in result["lights"]: # loop through all lights
             index += 1
             if i["lightId"] > 1:
-                for x in range(0, index): # loop through all preceding lights and set to black
-                    i["red"] = 0
-                    i["blue"] = 0
-                    i["green"] = 0
+                # for x in range(0, index): # loop through all preceding lights and set to black
+                #     i["red"] = 0
+                #     i["blue"] = 0
+                #     i["green"] = 0
+                led.fill( Color(0, 0, 0, 1), previousColored,  index)
+                led.set( i["lightID"], Color(i["red"], i["green"], i["blue"], i["intensity"]), )
+                previousColored = index.copy()
             if result["propagate"] is False or result["propagate"] is None:
                 for r in result["lights"]: # loop through all lights and set ones with missing IDs to black
                     if r["lightId"] is None:
