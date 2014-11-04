@@ -61,6 +61,7 @@ class rpi:
         # leftmostRed = None
         # leftmostBlue = None
         # leftmostGreen = None
+
         # web.header = {"Content-type": "application/json"}
         # payload = {
         #         "lights": [
@@ -91,7 +92,25 @@ class rpi:
         previousGreen = 0
         previousBlue = 0
         previousIntensity = 0
-        for i in lightsData: # loop through all lights
+        firstLightID = 0;
+        firstLightID = lightsData[0]["lightID"];
+        for i in lightsData: # first loop: set all colors without propagate
+            if i["lightID"] < firstLightID:
+                i["red"] = 0
+                i["blue"] = 0
+                i["green"] = 0
+                i["intensity"] = 0
+
+
+        for i in lightsData: # second loop: set colors based on propagate, set also on led strip
+            if result["propagate"] is True:
+                print i["lightID"];
+                print i;
+                if(i["lightID"] == "" or index == 0):
+                    led.set(index, Color(0, 0, 0, 0))
+                else:
+                    led.set(index, Color(lightsData[0]["red"],lightsData[0]["green"],lightsData[0]["blue"],lightsData[0]["intensity"]))
+
             # if i["lightId"] > 1:
             #     # for x in range(0, index): # loop through all preceding lights and set to black
             #     #     i["red"] = 0
@@ -100,6 +119,7 @@ class rpi:
             #     led.fill( Color(0, 0, 0, 1), previousColored,  index)
             #     led.set( i["lightID"], Color(i["red"], i["green"], i["blue"], i["intensity"]), )
             #     previousColored = index.copy()
+            '''
             print i["lightId"]
             if result["propagate"] is True or result["propagate"] is "True": #propagate is true, see Note 4 on RPi milestone 2 instructions
                 print i
@@ -112,6 +132,7 @@ class rpi:
                 previousIntensity = i["intensity"]
                 led.set(i["lightId"], Color(previousRed,previousGreen,previousBlue,previousIntensity))
                 previousColored = i["lightId"]
+                '''
                 # if index is 0: # if leftmost, set color to propagate to black
                 #     leftmostRed = 0
                 #     leftmostBlue = 0
@@ -126,16 +147,22 @@ class rpi:
                 #         r["blue"] = leftmostBlue
                 #         r["green"] = leftmostGreen
             else:
-                led.set(i["lightId"], Color(i["red"],i["green"],i["blue"],i["intensity"]))
+                for i in lightsData:
+                    if(i["lightID"] == ""):
+                        led.set(index, Color(0, 0, 0, 0))
+                    else:
+                        led.set(index, Color(i["red"],i["green"],i["blue"],i["intensity"]))
+            index += 1;
                 # for r in result["lights"]: # loop through all lights and set ones with missing IDs to black
                 #     if r["lightId"] is None:
                 #         r["red"] = 0
                 #         r["blue"] = 0
                 #         r["green"] = 0
-        if result["propagate"] is "True":
-            while previousColored < led.lastIndex:
-                print previousColored
-                led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
+
+        #if result["propagate"] is "True":
+         #   while previousColored < led.lastIndex:
+          #      print previousColored
+           #     led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
         led.update()
 
 if __name__ == "__main__":
