@@ -63,21 +63,21 @@ class rpi:
                 #     print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
                 #     previousColored += 1
                 led.fill( Color( i["red"], i["green"], i["blue"], i["intensity"]), i["lightId"])
-                previousRed = i["red"]
-                previousGreen = i["green"]
-                previousBlue = i["blue"]
-                previousIntensity = i["intensity"]
-                previousColored = i["lightId"]
+                # previousRed = i["red"]
+                # previousGreen = i["green"]
+                # previousBlue = i["blue"]
+                # previousIntensity = i["intensity"]
+                # previousColored = i["lightId"]
                 # led.set(i["lightId"], Color(previousRed,previousGreen,previousBlue,previousIntensity))
-                print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
-                led.update()
+                # print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
+                # led.update()
             else:
                 led.set(i["lightId"], Color(i["red"],i["green"],i["blue"],i["intensity"]))
         # if result["propagate"] is "True":
         #     while previousColored < led.lastIndex:
         #         print previousColored
         #         led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
-        # led.update()
+        led.update()
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
