@@ -62,7 +62,7 @@ class rpi:
                 #     led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
                 #     print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
                 #     previousColored += 1
-                led.fill( Color( i["red"], i["green"], i["blue"], i["intensity"]), previousColored, i["lightId"])
+                led.fill( Color( i["red"], i["green"], i["blue"], i["intensity"]), i["lightId"])
                 previousRed = i["red"]
                 previousGreen = i["green"]
                 previousBlue = i["blue"]
