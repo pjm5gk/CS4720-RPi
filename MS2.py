@@ -58,24 +58,26 @@ class rpi:
             print i["lightId"]
             if result["propagate"] is True or result["propagate"] is "True": #propagate is true, see Note 4 on RPi milestone 2 instructions
                 print i
-                while previousColored + 1 < i["lightId"]:
-                    led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
-                    print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
-                    previousColored += 1
+                # while previousColored + 1 < i["lightId"]:
+                #     led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
+                #     print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
+                #     previousColored += 1
+                led.fill( Color( i["red"], i["green"], i["blue"], i["intensity"]), previousColored, i["lightId"])
                 previousRed = i["red"]
                 previousGreen = i["green"]
                 previousBlue = i["blue"]
                 previousIntensity = i["intensity"]
-                led.set(i["lightId"], Color(previousRed,previousGreen,previousBlue,previousIntensity))
                 previousColored = i["lightId"]
+                # led.set(i["lightId"], Color(previousRed,previousGreen,previousBlue,previousIntensity))
                 print previousColored,":",previousRed,",",previousGreen,",",previousBlue,",",previousIntensity
+                led.update()
             else:
                 led.set(i["lightId"], Color(i["red"],i["green"],i["blue"],i["intensity"]))
-        if result["propagate"] is "True":
-            while previousColored < led.lastIndex:
-                print previousColored
-                led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
-        led.update()
+        # if result["propagate"] is "True":
+        #     while previousColored < led.lastIndex:
+        #         print previousColored
+        #         led.set(previousColored, Color(previousRed,previousGreen,previousBlue,previousIntensity))
+        # led.update()
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
